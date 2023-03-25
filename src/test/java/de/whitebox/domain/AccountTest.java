@@ -1,6 +1,7 @@
 package de.whitebox.domain;
 
 import de.whitebox.domain.bank.*;
+import de.whitebox.domain.bank.Account.*;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -52,7 +53,7 @@ class AccountTest {
     @Test
     void shouldNotAllowDebitIfCreditLineWasUsed() {
         var account = create();
-        assertThrows(IllegalArgumentException.class, () -> account.debit(301.00));
+        assertThrows(InsufficientDepositException.class, () -> account.debit(301.00));
     }
 
     private Account create() {

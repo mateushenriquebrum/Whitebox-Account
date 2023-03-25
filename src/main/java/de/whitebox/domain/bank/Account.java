@@ -21,7 +21,7 @@ public class Account extends Entity {
     private Account(Customer customer, Opening deposit, Granted credit) {
         requireNonNull(customer);
         requireNonNull(deposit);
-        requireMinimumAmount(deposit);
+        requireMinimumDeposit(deposit);
         this.balance = deposit.deposit();
         this.customer = customer;
         this.credit = credit;
@@ -49,12 +49,12 @@ public class Account extends Entity {
         if (credit.notGrantedFor(newBalance)) {
             // There is a big change to release another event here
             // Should a credit line listen for it in order to offer a better package for ths customer?
-            throw new IllegalArgumentException();
+            throw new InsufficientDepositException();
         }
         apply(new Balance(this.customer, newBalance, newBalance < 0));
     }
 
-    private static void requireMinimumAmount(Opening amount) {
+    private static void requireMinimumDeposit(Opening amount) {
         if (!amount.isMinimumRequired()) {
             throw new IllegalArgumentException("Amount to open an account is not minimum required");
         }
@@ -63,13 +63,13 @@ public class Account extends Entity {
     @Override
     public void mutate(Event event) {
         //There is not yet a descent pattern match in java 19, so using instanceOf here
-        if (event instanceof Balance balance) {
-            this.balance = balance.amount();
-            this.overdraft = balance.overdraft();
-        } else if (event instanceof Opened opened) {
-            this.balance = opened.initial().deposit();
-            this.customer = opened.customer();
-            this.credit = opened.credit();
+        if (event instanceof Balance e) {
+            this.balance = e.amount();
+            this.overdraft = e.overdraft();
+        } else if (event instanceof Opened e) {
+            this.balance = e.initial().deposit();
+            this.customer = e.customer();
+            this.credit = e.credit();
         }
     }
 
@@ -94,4 +94,6 @@ public class Account extends Entity {
                 ", line=" + credit +
                 '}';
     }
+
+    public static class InsufficientDepositException extends RuntimeException {}
 }
