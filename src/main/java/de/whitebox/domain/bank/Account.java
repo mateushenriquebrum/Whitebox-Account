@@ -1,13 +1,11 @@
-package de.whitebox.domain.bank.entities;
+package de.whitebox.domain.bank;
 
 
-import de.whitebox.domain.bank.events.*;
-import de.whitebox.domain.bank.vos.*;
 import de.whitebox.domain.shared.*;
 
 import java.util.*;
 
-import static java.util.Objects.requireNonNull;
+import static java.util.Objects.*;
 
 /**
  * Account: an entity that control user debit and credit,

@@ -1,10 +1,10 @@
-package de.whitebox.domain.bank.vos;
+package de.whitebox.domain.bank;
 
 import de.whitebox.domain.shared.*;
 
 import java.util.*;
 
-import static java.util.UUID.randomUUID;
+import static java.util.UUID.*;
 
 /**
  * A Value Object describing the customer, in a real application it should also be an entity
@@ -13,11 +13,8 @@ import static java.util.UUID.randomUUID;
  * @param name    First name
  * @param surname Last name
  */
-public record Customer(CustomerId id, String name, String surname) implements ValueObject {
+public record Customer(UUID id, String name, String surname) implements ValueObject {
     public Customer(String name, String surname) {
-        this(new CustomerId(randomUUID()), name, surname);
+        this(randomUUID(), name, surname);
     }
-
-    public record CustomerId(UUID id) { }
-
 }

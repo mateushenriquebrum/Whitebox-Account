@@ -1,14 +1,9 @@
 package de.whitebox.domain;
 
-import de.whitebox.domain.bank.entities.*;
-import de.whitebox.domain.bank.events.*;
-import de.whitebox.domain.bank.vos.*;
+import de.whitebox.domain.bank.*;
 import org.junit.jupiter.api.*;
 
-
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class AccountTest {
 

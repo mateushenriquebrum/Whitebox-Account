@@ -1,15 +1,13 @@
 package de.whitebox.domain;
 
-import de.whitebox.domain.bank.entities.*;
-import de.whitebox.domain.bank.events.*;
-import de.whitebox.domain.bank.vos.*;
+import de.whitebox.domain.bank.*;
 import de.whitebox.domain.shared.*;
 import org.junit.jupiter.api.*;
 
-import static de.whitebox.domain.bank.entities.Account.open;
-import static java.util.List.of;
-import static java.util.UUID.randomUUID;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static de.whitebox.domain.bank.Account.*;
+import static java.util.List.*;
+import static java.util.UUID.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 class SerializerTest {
     @Test

@@ -1,4 +1,4 @@
-package de.whitebox.domain.bank.vos;
+package de.whitebox.domain.bank;
 
 import de.whitebox.domain.shared.*;
 

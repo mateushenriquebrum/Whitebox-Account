@@ -2,8 +2,8 @@ package de.whitebox.domain.shared;
 
 import java.util.*;
 
-import static java.util.Collections.unmodifiableList;
-import static java.util.UUID.randomUUID;
+import static java.util.Collections.*;
+import static java.util.UUID.*;
 
 /**
  * It defines a entity managed by an event source persistence layer
@@ -33,7 +33,6 @@ public abstract class Entity {
     protected Entity(List<Event> events, UUID locked, UUID id) {
         events.forEach(this::mutate);
         this.locked = locked;
-        this.version = locked;
         this.id = id;
     }
 
@@ -45,13 +44,11 @@ public abstract class Entity {
     protected void apply(Event event) {
         mutate(event);
         changes.add(event);
-        version = randomUUID();
     }
 
     private final List<Event> changes = new ArrayList<>();
 
     private UUID locked;
-    private UUID version;
     private UUID id;
 
 }
