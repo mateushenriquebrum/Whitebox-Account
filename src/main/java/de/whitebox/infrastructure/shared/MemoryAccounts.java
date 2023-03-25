@@ -25,7 +25,7 @@ public class MemoryAccounts implements Accounts {
     public synchronized void persist(List<Event> events, UUID locked, UUID id) {
         data.computeIfPresent(id, (iid, src) -> {
             if (src.version != locked) {
-                throw new RuntimeException("Optimistic Lock Failure");
+                throw new OptimisticLockException();
             }
             return new Source("ACCOUNTS", randomUUID(), events);
         });
@@ -51,6 +51,9 @@ public class MemoryAccounts implements Accounts {
      * @param events  All the events persisted, it MUST change version everytime new events are persisted
      */
     record Source(String type, UUID version, List<Event> events) {
+    }
+
+    public static class OptimisticLockException extends RuntimeException {
     }
 
 }

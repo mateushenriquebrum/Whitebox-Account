@@ -2,6 +2,7 @@ package de.whitebox.domain;
 
 import de.whitebox.domain.bank.*;
 import de.whitebox.infrastructure.shared.*;
+import de.whitebox.infrastructure.shared.MemoryAccounts.*;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,8 +29,8 @@ class MemoryAccountsTest {
         first.debit(10); //concurrency
         second.debit(10);//concurrency
 
-        accounts.persist(first);
-        assertThrows(RuntimeException.class, () ->
+        accounts.persist(first); //first to commit wins
+        assertThrows(OptimisticLockException.class, () ->
                 accounts.persist(second));
     }
 }

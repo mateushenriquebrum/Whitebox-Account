@@ -1,10 +1,10 @@
 package de.whitebox.domain;
 
 import de.whitebox.domain.bank.*;
-import de.whitebox.domain.shared.*;
 import org.junit.jupiter.api.*;
 
 import static de.whitebox.domain.bank.Account.*;
+import static de.whitebox.domain.shared.Serializer.serialize;
 import static java.util.List.*;
 import static java.util.UUID.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,7 +18,7 @@ class SerializerTest {
         var locked = randomUUID();
         var id = randomUUID();
 
-        var unmarshalled = Serializer.serialize(Account.class, of(new Opened(customer, initial, line)), locked, id);
+        var unmarshalled = serialize(Account.class, of(new Opened(customer, initial, line)), locked, id);
         var expected = open(customer, initial, line);
         assertEquals(expected, unmarshalled);
         assertEquals(locked, unmarshalled.locked());
