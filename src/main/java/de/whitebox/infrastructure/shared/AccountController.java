@@ -5,7 +5,9 @@ import de.whitebox.domain.bank.*;
 import de.whitebox.domain.shared.*;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@RestController()
+@RequestMapping("/account")
+
 public class AccountController {
 
     private Accounts accounts;
@@ -21,6 +23,11 @@ public class AccountController {
         var use = new Bank(broker, accounts);
         var customer = new Customer(request.name(), request.surname());
         use.open(customer, request.deposit());
+    }
+
+    @GetMapping("/{id}")
+    public String account(@PathVariable("id") String id) {
+       return "Hello "+id;
     }
 
     record OpenRequest(String name, String surname, double deposit) {
