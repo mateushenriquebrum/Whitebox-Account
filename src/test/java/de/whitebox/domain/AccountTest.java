@@ -18,28 +18,29 @@ class AccountTest {
         var bad = new Opening(24.99);
         assertDoesNotThrow(() -> Account.open(customer, good, credit));
         assertThrows(IllegalArgumentException.class, () -> Account.open(customer, bad, credit));
-        assertTrue(Account.open(customer, good, credit).changes().contains(new Opened(customer, good, credit)));
+        var open = Account.open(customer, good, credit);
+        assertTrue(open.changes().contains(new Opened(open.id(), good, credit, customer)));
     }
 
     @Test
     void shouldCreditIncreaseBalance() {
         var account = create();
         account.credit(10.00);
-        assertTrue(account.changes().contains(new Credit(customer, 10, 110, false)));
+        assertTrue(account.changes().contains(new Credit(account.id(), 10, 110)));
     }
 
     @Test
     void shouldDebitDecreaseBalance() {
         var account = create();
         account.debit(10);
-        assertTrue(account.changes().contains(new Debit(customer, 10, 90, false)));
+        assertTrue(account.changes().contains(new Debit(account.id(), 10, 90)));
     }
 
     @Test
     void shouldDebitOverdraftAnAccount() {
         var account = create();
         account.debit(101);
-        assertTrue(account.changes().contains(new Debit(customer, 101, -1, true)));
+        assertTrue(account.changes().contains(new Debit(account.id(), 101, -1)));
     }
 
     @Test
@@ -47,7 +48,7 @@ class AccountTest {
         var account = create();
         account.debit(101);
         account.credit(1);
-        assertTrue(account.changes().contains(new Credit(customer, 1, 0, false)));
+        assertTrue(account.changes().contains(new Credit(account.id(), 1, 0)));
     }
 
     @Test

@@ -25,7 +25,7 @@ public class Account extends Entity {
         this.balance = deposit.deposit();
         this.customer = customer;
         this.credit = credit;
-        apply(new Opened(this.id(), deposit, credit));
+        apply(new Opened(this.id(), deposit, credit, customer));
     }
 
     /**
@@ -41,7 +41,10 @@ public class Account extends Entity {
 
     public void credit(double amount) {
         var newBalance = this.balance + amount;
-        apply(new Credit(this.id(), amount, newBalance, newBalance < 0));
+        apply(new Credit(this.id(), amount, newBalance));
+        if(newBalance < 0 && !overdraft) {
+            apply(new Overdraft(this.id(), newBalance));
+        }
     }
 
     public void debit(double amount) {
@@ -51,7 +54,10 @@ public class Account extends Entity {
             // Should a credit line listen for it in order to offer a better package for ths customer?
             throw new InsufficientDepositException();
         }
-        apply(new Debit(this.id(), amount, newBalance, newBalance < 0));
+        apply(new Debit(this.id(), amount, newBalance));
+        if(newBalance >= 0 && overdraft) {
+            apply(new Balance(this.id(), newBalance));
+        }
     }
 
     private static void requireMinimumDeposit(Opening amount) {
@@ -65,13 +71,16 @@ public class Account extends Entity {
         //There is not yet a descent pattern match in java 19, so using instanceOf here
         if (event instanceof Credit e) {
             this.balance = e.balance();
-            this.overdraft = e.overdraft();
         } else if (event instanceof Debit e) {
             this.balance = e.balance();
-            this.overdraft = e.overdraft();
         } else if (event instanceof Opened e) {
             this.balance = e.initial().deposit();
             this.credit = e.credit();
+            this.customer = e.customer();
+        } else if (event instanceof Overdraft e) {
+            this.overdraft = true;
+        } else if (event instanceof Balance e) {
+            this.overdraft = false;
         }
     }
 

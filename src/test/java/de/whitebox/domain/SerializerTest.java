@@ -18,7 +18,7 @@ class SerializerTest {
         var locked = randomUUID();
         var id = randomUUID();
 
-        var unmarshalled = serialize(Account.class, of(new Opened(customer, initial, line)), locked, id);
+        var unmarshalled = serialize(Account.class, of(new Opened(id, initial, line, customer)), locked, id);
         var expected = open(customer, initial, line);
         assertEquals(expected, unmarshalled);
         assertEquals(locked, unmarshalled.locked());
