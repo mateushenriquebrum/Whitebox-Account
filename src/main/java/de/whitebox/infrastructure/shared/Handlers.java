@@ -1,5 +1,6 @@
 package de.whitebox.infrastructure.shared;
 
+import de.whitebox.application.api.*;
 import de.whitebox.domain.bank.*;
 import de.whitebox.domain.shared.*;
 import org.springframework.stereotype.*;
@@ -12,13 +13,15 @@ import org.springframework.stereotype.*;
  * @param broker Broker providing publish and subscriber methods
  */
 @Component
-public record Handlers(Broker broker) {
+public record Handlers(Broker broker, Ledger ledger) {
     public Handlers {
         broker.subscribes(event -> {
-            if (event instanceof Balance balance) {
-                System.out.println(balance);
+            if (event instanceof Credit credit) {
+                ledger.performed(credit);
+            } else if (event instanceof Debit debit) {
+                ledger.performed(debit);
             } else if (event instanceof Opened opened) {
-                System.out.println(opened);
+                ledger.opened(opened);
             }
         });
     }

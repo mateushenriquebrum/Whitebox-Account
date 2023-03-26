@@ -19,7 +19,7 @@ public class MemoryAccounts implements Accounts {
     private Map<UUID, Source> data = new HashMap<>();
 
     /**
-     * It is utterly important that shared memory manipulation be atomic,
+     * It is utterly important that shared memory manipulation is atomic,
      * otherwise it is impossible detect changes in data version, the same apply to any database.
      */
     public synchronized void persist(List<Event> events, UUID locked, UUID id) {

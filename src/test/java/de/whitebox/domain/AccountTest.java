@@ -9,8 +9,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class AccountTest {
 
     Customer customer = new Customer("", "");
-    Opening deposit = new Opening(100.00);
-    Granted credit = new Granted(200.00);
+    Opening deposit = new Opening(100);
+    Granted credit = new Granted(200);
 
     @Test
     void shouldAlwaysBeOpenedWithDeposit() {
@@ -25,35 +25,35 @@ class AccountTest {
     void shouldCreditIncreaseBalance() {
         var account = create();
         account.credit(10.00);
-        assertTrue(account.changes().contains(new Balance(customer, 110.00, false)));
+        assertTrue(account.changes().contains(new Credit(customer, 10, 110, false)));
     }
 
     @Test
     void shouldDebitDecreaseBalance() {
         var account = create();
-        account.debit(10.00);
-        assertTrue(account.changes().contains(new Balance(customer, 90.00, false)));
+        account.debit(10);
+        assertTrue(account.changes().contains(new Debit(customer, 10, 90, false)));
     }
 
     @Test
     void shouldDebitOverdraftAnAccount() {
         var account = create();
-        account.debit(101.00);
-        assertTrue(account.changes().contains(new Balance(customer, -1.00, true)));
+        account.debit(101);
+        assertTrue(account.changes().contains(new Debit(customer, 101, -1, true)));
     }
 
     @Test
-    void shouldCreditNotOverdraftAnAccount() {
+    void shouldCreditReturnToNotOverdraftAnAccount() {
         var account = create();
-        account.debit(101.00);
-        account.credit(1.00);
-        assertTrue(account.changes().contains(new Balance(customer, 0.00, false)));
+        account.debit(101);
+        account.credit(1);
+        assertTrue(account.changes().contains(new Credit(customer, 1, 0, false)));
     }
 
     @Test
     void shouldNotAllowDebitIfCreditLineWasUsed() {
         var account = create();
-        assertThrows(InsufficientDepositException.class, () -> account.debit(301.00));
+        assertThrows(InsufficientDepositException.class, () -> account.debit(301));
     }
 
     private Account create() {

@@ -41,7 +41,7 @@ public class Account extends Entity {
 
     public void credit(double amount) {
         var newBalance = this.balance + amount;
-        apply(new Balance(this.customer, newBalance, newBalance < 0));
+        apply(new Credit(this.customer, amount, newBalance, newBalance < 0));
     }
 
     public void debit(double amount) {
@@ -51,7 +51,7 @@ public class Account extends Entity {
             // Should a credit line listen for it in order to offer a better package for ths customer?
             throw new InsufficientDepositException();
         }
-        apply(new Balance(this.customer, newBalance, newBalance < 0));
+        apply(new Debit(this.customer, amount, newBalance, newBalance < 0));
     }
 
     private static void requireMinimumDeposit(Opening amount) {
@@ -63,8 +63,11 @@ public class Account extends Entity {
     @Override
     public void mutate(Event event) {
         //There is not yet a descent pattern match in java 19, so using instanceOf here
-        if (event instanceof Balance e) {
-            this.balance = e.amount();
+        if (event instanceof Credit e) {
+            this.balance = e.balance();
+            this.overdraft = e.overdraft();
+        } else if (event instanceof Debit e) {
+            this.balance = e.balance();
             this.overdraft = e.overdraft();
         } else if (event instanceof Opened e) {
             this.balance = e.initial().deposit();

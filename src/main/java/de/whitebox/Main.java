@@ -8,7 +8,7 @@ import org.springframework.context.annotation.*;
  * The entry point to start the whole application
  */
 @SpringBootApplication
-@ComponentScan(basePackages = "de.whitebox.infrastructure")
+@ComponentScan(basePackages = {"de.whitebox.infrastructure", "de.whitebox.application"})
 public class Main {
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
