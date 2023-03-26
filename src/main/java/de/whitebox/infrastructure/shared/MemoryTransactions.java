@@ -13,8 +13,8 @@ public class MemoryTransactions implements Transactions {
 
     @Override
     public void add(Transaction transaction) {
-        data.putIfAbsent(transaction.customer(), new ArrayList<>());
-        data.computeIfPresent(transaction.customer(), (i, d) -> {
+        data.putIfAbsent(transaction.account(), new ArrayList<>());
+        data.computeIfPresent(transaction.account(), (i, d) -> {
            var added = new ArrayList<>(d);
            added.add(transaction);
            return added;
@@ -22,7 +22,7 @@ public class MemoryTransactions implements Transactions {
     }
 
     @Override
-    public List<Transaction> of(UUID customer) {
-        return data.get(customer);
+    public List<Transaction> of(UUID account) {
+        return data.get(account);
     }
 }

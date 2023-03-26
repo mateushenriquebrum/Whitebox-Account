@@ -16,9 +16,10 @@ public record Bank(Broker publisher, Accounts accounts) implements Aggregator {
      * It commands to open an account applying the default credit and validate every parameter
      * and failing if not possible
      */
-    public void open(Customer customer, double initial) {
+    public Account open(Customer customer, double initial) {
         var opened = Account.open(customer, new Opening(initial), Granted.standardCreditLine());
         commit(opened);
+        return opened;
     }
 
     /**

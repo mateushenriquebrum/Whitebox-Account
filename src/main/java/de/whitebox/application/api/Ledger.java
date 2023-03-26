@@ -1,7 +1,6 @@
 package de.whitebox.application.api;
 
 import de.whitebox.domain.bank.*;
-import io.swagger.v3.oas.annotations.servers.*;
 import org.springframework.stereotype.*;
 
 import java.util.*;
@@ -16,20 +15,20 @@ public class Ledger {
     }
 
     public void performed(Credit credit) {
-        transactions.add(new Transaction(credit.customer().id(), "IN", credit.amount(), credit.balance()));
+        transactions.add(new Transaction(credit.account(), "IN", credit.amount(), credit.balance()));
     }
 
     public void performed(Debit debit) {
-        transactions.add(new Transaction(debit.customer().id(),"OUT", debit.amount(), debit.balance()));
+        transactions.add(new Transaction(debit.account(),"OUT", debit.amount(), debit.balance()));
     }
 
     public void opened(Opened opened) {
-        transactions.add(new Transaction(opened.customer().id(),"OPENED", opened.initial().deposit(), opened.initial().deposit()));
+        transactions.add(new Transaction(opened.account(),"OPENED", opened.initial().deposit(), opened.initial().deposit()));
     }
 
-    public List<Transaction> of(UUID customer) {
-        return transactions.of(customer);
+    public List<Transaction> of(UUID account) {
+        return transactions.of(account);
     }
 
-    public record Transaction(UUID customer, String type, double value, double balance) { }
+    public record Transaction(UUID account, String type, double value, double balance) { }
 }

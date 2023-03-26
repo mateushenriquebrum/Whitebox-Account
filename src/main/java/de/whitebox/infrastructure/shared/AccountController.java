@@ -14,35 +14,44 @@ import java.util.*;
 
 public class AccountController {
 
-    private Accounts accounts;
-    private Broker broker;
     private Ledger ledger;
+    private Bank bank;
 
     public AccountController(Accounts accounts, Broker broker, Ledger ledger) {
-        this.accounts = accounts;
-        this.broker = broker;
         this.ledger = ledger;
+        this.bank = new Bank(broker, accounts);
     }
 
     @PostMapping("/open")
-    public List<Transaction> open(@RequestBody OpenRequest request) {
-        var use = new Bank(broker, accounts);
-        var customer = new Customer(request.name(), request.surname());
-        use.open(customer, request.deposit());
-        return ledger.of(customer.id());
+    public UUID open(@RequestBody OpenRequest request) {
+        return bank
+                .open(new Customer(request.name(), request.surname()), request.deposit())
+                .id();
+    }
+
+    @PostMapping("/debit")
+    public List<Transaction> debit(@RequestBody DebitRequest request) {
+        bank.deposit(request.id(), request.amount());
+        return ledger.of(request.id());
+    }
+
+    @PostMapping("/credit")
+    public List<Transaction> credit(@RequestBody CreditRequest request) {
+        bank.credit(request.id(), request.amount());
+        return ledger.of(request.id());
     }
 
     @GetMapping("/{id}")
-    public String account(@PathVariable("id") String id) {
-       return "Hello "+id;
+    public List<Transaction> account(@PathVariable("id") UUID id) {
+        return ledger.of(id);
     }
 
     record OpenRequest(String name, String surname, double deposit) {
     }
 
-    record DebitRequest(String id, double debit) {
+    record DebitRequest(UUID id, double amount) {
     }
 
-    record CreditRequest(String id, double credit) {
+    record CreditRequest(UUID id, double amount) {
     }
 }

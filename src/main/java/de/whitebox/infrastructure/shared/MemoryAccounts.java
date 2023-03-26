@@ -27,7 +27,9 @@ public class MemoryAccounts implements Accounts {
             if (src.version != locked) {
                 throw new OptimisticLockException();
             }
-            return new Source("ACCOUNTS", randomUUID(), events);
+            var added = new ArrayList<>(src.events());
+            added.addAll(events);
+            return new Source("ACCOUNTS", randomUUID(), added);
         });
         data.putIfAbsent(id, new Source("ACCOUNTS", randomUUID(), events));
     }
@@ -46,11 +48,11 @@ public class MemoryAccounts implements Accounts {
     /**
      * It represents a row in a SQL database or a collection in MongoDB for example
      *
-     * @param type    Type of source, e.g: Account, Customers, CreditLine, etc
+     * @param entity  Entity type, e.g: Account, Customers, CreditLine, etc
      * @param version The latest version persisted
      * @param events  All the events persisted, it MUST change version everytime new events are persisted
      */
-    record Source(String type, UUID version, List<Event> events) {
+    record Source(String entity, UUID version, List<Event> events) {
     }
 
     public static class OptimisticLockException extends RuntimeException {

@@ -25,7 +25,7 @@ public class Account extends Entity {
         this.balance = deposit.deposit();
         this.customer = customer;
         this.credit = credit;
-        apply(new Opened(this.customer, deposit, credit));
+        apply(new Opened(this.id(), deposit, credit));
     }
 
     /**
@@ -41,7 +41,7 @@ public class Account extends Entity {
 
     public void credit(double amount) {
         var newBalance = this.balance + amount;
-        apply(new Credit(this.customer, amount, newBalance, newBalance < 0));
+        apply(new Credit(this.id(), amount, newBalance, newBalance < 0));
     }
 
     public void debit(double amount) {
@@ -51,7 +51,7 @@ public class Account extends Entity {
             // Should a credit line listen for it in order to offer a better package for ths customer?
             throw new InsufficientDepositException();
         }
-        apply(new Debit(this.customer, amount, newBalance, newBalance < 0));
+        apply(new Debit(this.id(), amount, newBalance, newBalance < 0));
     }
 
     private static void requireMinimumDeposit(Opening amount) {
@@ -71,7 +71,6 @@ public class Account extends Entity {
             this.overdraft = e.overdraft();
         } else if (event instanceof Opened e) {
             this.balance = e.initial().deposit();
-            this.customer = e.customer();
             this.credit = e.credit();
         }
     }
