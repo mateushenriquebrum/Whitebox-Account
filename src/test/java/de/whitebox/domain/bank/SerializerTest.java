@@ -1,4 +1,4 @@
-package de.whitebox.domain;
+package de.whitebox.domain.bank;
 
 import de.whitebox.domain.bank.*;
 import org.junit.jupiter.api.*;

@@ -1,8 +1,8 @@
 package de.whitebox.infrastructure.shared;
 
 import de.whitebox.application.api.*;
+import de.whitebox.application.bank.*;
 import de.whitebox.domain.bank.*;
-import de.whitebox.domain.shared.*;
 import org.springframework.stereotype.*;
 
 /**

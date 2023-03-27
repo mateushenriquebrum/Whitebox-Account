@@ -1,8 +1,8 @@
-package de.whitebox.domain;
+package de.whitebox.domain.bank;
 
 import de.whitebox.domain.bank.*;
-import de.whitebox.infrastructure.shared.*;
-import de.whitebox.infrastructure.shared.MemoryAccounts.*;
+import de.whitebox.infrastructure.bank.*;
+import de.whitebox.infrastructure.bank.MemoryAccounts.*;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;

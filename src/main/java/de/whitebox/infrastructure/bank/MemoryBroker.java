@@ -1,5 +1,6 @@
-package de.whitebox.infrastructure.shared;
+package de.whitebox.infrastructure.bank;
 
+import de.whitebox.application.bank.*;
 import de.whitebox.domain.shared.*;
 import org.springframework.stereotype.*;
 

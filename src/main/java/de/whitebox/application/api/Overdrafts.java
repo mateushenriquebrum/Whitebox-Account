@@ -9,4 +9,6 @@ public interface Overdrafts {
     void insert(Overdraft overdraft);
 
     void remove(UUID account);
+
+    List<Overdraft> all();
 }

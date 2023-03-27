@@ -3,7 +3,6 @@ package de.whitebox.application.api;
 import de.whitebox.domain.bank.*;
 import org.springframework.stereotype.*;
 
-import java.time.*;
 import java.util.*;
 
 import static java.time.LocalDateTime.now;
@@ -14,8 +13,9 @@ public class Query {
     private Registers register;
     private Overdrafts overdrafts;
 
-    public Query(Registers register) {
+    public Query(Registers register, Overdrafts overdrafts) {
         this.register = register;
+        this.overdrafts = overdrafts;
     }
 
     public void add(Credited credited) {
@@ -31,7 +31,7 @@ public class Query {
     }
 
     public void add(Overdrafted overdrafted) {
-        overdrafts.insert(new Overdraft(overdrafted.account(), overdrafted.amount(), now()));
+        overdrafts.insert(new Overdraft(overdrafted.account(), now()));
     }
 
 
@@ -39,11 +39,13 @@ public class Query {
         overdrafts.remove(balance.account());
     }
 
-
-
     public List<Transaction> of(UUID account) {
         return register.of(account);
     }
 
-    public record Transaction(UUID account, String type, double value, double balance) { }
+    public List<Overdraft> overdrafts() {
+        return overdrafts.all();
+    }
+
+    public record Transaction(UUID account, String type, double amount, double balance) { }
 }

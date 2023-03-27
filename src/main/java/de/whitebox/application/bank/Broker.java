@@ -1,5 +1,7 @@
-package de.whitebox.domain.shared;
+package de.whitebox.application.bank;
 
+
+import de.whitebox.domain.shared.*;
 
 import java.util.*;
 import java.util.function.*;

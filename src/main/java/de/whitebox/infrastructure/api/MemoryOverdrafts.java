@@ -1,4 +1,4 @@
-package de.whitebox.infrastructure.shared;
+package de.whitebox.infrastructure.api;
 
 import de.whitebox.application.api.*;
 import org.springframework.stereotype.*;
@@ -23,5 +23,10 @@ public class MemoryOverdrafts implements Overdrafts {
     @Override
     public void remove(UUID account) {
         data.remove(account);
+    }
+
+    @Override
+    public List<Overdraft> all() {
+        return new ArrayList<>(data.values());
     }
 }

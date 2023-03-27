@@ -1,4 +1,4 @@
-package de.whitebox.infrastructure.shared;
+package de.whitebox.infrastructure.api;
 
 import de.whitebox.application.api.*;
 import de.whitebox.application.api.Query.*;

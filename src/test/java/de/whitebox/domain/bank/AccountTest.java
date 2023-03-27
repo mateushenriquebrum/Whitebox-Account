@@ -1,4 +1,4 @@
-package de.whitebox.domain;
+package de.whitebox.domain.bank;
 
 import de.whitebox.domain.bank.*;
 import de.whitebox.domain.bank.Account.*;
@@ -61,7 +61,7 @@ class AccountTest {
     void shouldOverdraft() {
         var account = create();
         account.debit(101);
-        assertTrue(account.changes().contains(new Overdrafted(account.id(), 1)));
+        assertTrue(account.changes().contains(new Overdrafted(account.id())));
     }
 
     @Test

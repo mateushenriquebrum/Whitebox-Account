@@ -56,7 +56,7 @@ public class Account extends Entity {
         }
         apply(new Debited(this.id(), amount, newBalance));
         if(newBalance < 0 && !overdraft) {
-            apply(new Overdrafted(this.id(), newBalance * -1));
+            apply(new Overdrafted(this.id()));
         }
     }
 
