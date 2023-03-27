@@ -1,7 +1,7 @@
 package de.whitebox.infrastructure.shared;
 
 import de.whitebox.application.api.*;
-import de.whitebox.application.api.Ledger.*;
+import de.whitebox.application.api.Query.*;
 import de.whitebox.application.bank.*;
 import de.whitebox.domain.bank.*;
 import de.whitebox.domain.shared.*;
@@ -14,11 +14,11 @@ import java.util.*;
 
 public class AccountController {
 
-    private Ledger ledger;
+    private Query query;
     private Bank bank;
 
-    public AccountController(Accounts accounts, Broker broker, Ledger ledger) {
-        this.ledger = ledger;
+    public AccountController(Accounts accounts, Broker broker, Query query) {
+        this.query = query;
         this.bank = new Bank(broker, accounts);
     }
 
@@ -32,18 +32,18 @@ public class AccountController {
     @PostMapping("/debit")
     public List<Transaction> debit(@RequestBody DebitRequest request) {
         bank.deposit(request.id(), request.amount());
-        return ledger.of(request.id());
+        return query.of(request.id());
     }
 
     @PostMapping("/credit")
     public List<Transaction> credit(@RequestBody CreditRequest request) {
         bank.credit(request.id(), request.amount());
-        return ledger.of(request.id());
+        return query.of(request.id());
     }
 
     @GetMapping("/{id}")
     public List<Transaction> account(@PathVariable("id") UUID id) {
-        return ledger.of(id);
+        return query.of(id);
     }
 
     record OpenRequest(String name, String surname, double deposit) {

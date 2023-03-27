@@ -4,5 +4,5 @@ import de.whitebox.domain.shared.*;
 
 import java.util.*;
 
-public record Credit(UUID account, double amount, double balance) implements Event {
+public record Balanced(UUID account, double balance) implements Event {
 }

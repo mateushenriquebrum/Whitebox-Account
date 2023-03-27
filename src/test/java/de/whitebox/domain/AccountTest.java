@@ -10,7 +10,7 @@ class AccountTest {
 
     Customer customer = new Customer("", "");
     Opening deposit = new Opening(100);
-    Granted credit = new Granted(200);
+    Granting credit = new Granting(200);
 
     @Test
     void shouldAlwaysBeOpenedWithDeposit() {
@@ -26,21 +26,21 @@ class AccountTest {
     void shouldCreditIncreaseBalance() {
         var account = create();
         account.credit(10.00);
-        assertTrue(account.changes().contains(new Credit(account.id(), 10, 110)));
+        assertTrue(account.changes().contains(new Credited(account.id(), 10, 110)));
     }
 
     @Test
     void shouldDebitDecreaseBalance() {
         var account = create();
         account.debit(10);
-        assertTrue(account.changes().contains(new Debit(account.id(), 10, 90)));
+        assertTrue(account.changes().contains(new Debited(account.id(), 10, 90)));
     }
 
     @Test
     void shouldDebitOverdraftAnAccount() {
         var account = create();
         account.debit(101);
-        assertTrue(account.changes().contains(new Debit(account.id(), 101, -1)));
+        assertTrue(account.changes().contains(new Debited(account.id(), 101, -1)));
     }
 
     @Test
@@ -48,13 +48,28 @@ class AccountTest {
         var account = create();
         account.debit(101);
         account.credit(1);
-        assertTrue(account.changes().contains(new Credit(account.id(), 1, 0)));
+        assertTrue(account.changes().contains(new Credited(account.id(), 1, 0)));
     }
 
     @Test
     void shouldNotAllowDebitIfCreditLineWasUsed() {
         var account = create();
         assertThrows(InsufficientDepositException.class, () -> account.debit(301));
+    }
+
+    @Test
+    void shouldOverdraft() {
+        var account = create();
+        account.debit(101);
+        assertTrue(account.changes().contains(new Overdrafted(account.id(), 1)));
+    }
+
+    @Test
+    void shouldRecoverBalance() {
+        var account = create();
+        account.debit(101);
+        account.credit(1);
+        assertTrue(account.changes().contains(new Balanced(account.id(), 0)));
     }
 
     private Account create() {

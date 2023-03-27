@@ -12,7 +12,7 @@ class MemoryAccountsTest {
     @Test
     void shouldPersistEntity() {
         var accounts = new MemoryAccounts();
-        var account = Account.open(new Customer("", ""), new Opening(100), new Granted(100));
+        var account = Account.open(new Customer("", ""), new Opening(100), new Granting(100));
         accounts.persist(account);
         assertEquals(accounts.of(account.id()), account);
     }
@@ -20,7 +20,7 @@ class MemoryAccountsTest {
     @Test
     void shouldThrowOptimisticLockException() {
         var accounts = new MemoryAccounts();
-        var created = Account.open(new Customer("", ""), new Opening(100), new Granted(100));
+        var created = Account.open(new Customer("", ""), new Opening(100), new Granting(100));
         accounts.persist(created.changes(), created.locked(), created.id());
 
         var first = accounts.of(created.id());

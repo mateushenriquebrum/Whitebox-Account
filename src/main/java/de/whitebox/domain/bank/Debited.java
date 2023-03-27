@@ -4,5 +4,5 @@ import de.whitebox.domain.shared.*;
 
 import java.util.*;
 
-public record Overdraft(UUID customer, double amount) implements Event {
+public record Debited(UUID account, double amount, double balance) implements Event {
 }

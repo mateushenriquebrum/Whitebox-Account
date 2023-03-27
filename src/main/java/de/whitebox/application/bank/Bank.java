@@ -17,7 +17,7 @@ public record Bank(Broker publisher, Accounts accounts) implements Aggregator {
      * and failing if not possible
      */
     public Account open(Customer customer, double initial) {
-        var opened = Account.open(customer, new Opening(initial), Granted.standardCreditLine());
+        var opened = Account.open(customer, new Opening(initial), Granting.standardCreditLine());
         commit(opened);
         return opened;
     }

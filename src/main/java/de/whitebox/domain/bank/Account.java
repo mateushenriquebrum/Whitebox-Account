@@ -16,9 +16,9 @@ public class Account extends Entity {
     private double balance;
     private Customer customer;
     private boolean overdraft;
-    private Granted credit;
+    private Granting credit;
 
-    private Account(Customer customer, Opening deposit, Granted credit) {
+    private Account(Customer customer, Opening deposit, Granting credit) {
         requireNonNull(customer);
         requireNonNull(deposit);
         requireMinimumDeposit(deposit);
@@ -35,15 +35,15 @@ public class Account extends Entity {
         super(events, locked, id);
     }
 
-    public static Account open(Customer customer, Opening deposit, Granted line) {
+    public static Account open(Customer customer, Opening deposit, Granting line) {
         return new Account(customer, deposit, line);
     }
 
     public void credit(double amount) {
         var newBalance = this.balance + amount;
-        apply(new Credit(this.id(), amount, newBalance));
-        if(newBalance < 0 && !overdraft) {
-            apply(new Overdraft(this.id(), newBalance));
+        apply(new Credited(this.id(), amount, newBalance));
+        if(newBalance >= 0 && overdraft) {
+            apply(new Balanced(this.id(), newBalance));
         }
     }
 
@@ -54,9 +54,9 @@ public class Account extends Entity {
             // Should a credit line listen for it in order to offer a better package for ths customer?
             throw new InsufficientDepositException();
         }
-        apply(new Debit(this.id(), amount, newBalance));
-        if(newBalance >= 0 && overdraft) {
-            apply(new Balance(this.id(), newBalance));
+        apply(new Debited(this.id(), amount, newBalance));
+        if(newBalance < 0 && !overdraft) {
+            apply(new Overdrafted(this.id(), newBalance * -1));
         }
     }
 
@@ -69,17 +69,17 @@ public class Account extends Entity {
     @Override
     public void mutate(Event event) {
         //There is not yet a descent pattern match in java 19, so using instanceOf here
-        if (event instanceof Credit e) {
+        if (event instanceof Credited e) {
             this.balance = e.balance();
-        } else if (event instanceof Debit e) {
+        } else if (event instanceof Debited e) {
             this.balance = e.balance();
         } else if (event instanceof Opened e) {
             this.balance = e.initial().deposit();
             this.credit = e.credit();
             this.customer = e.customer();
-        } else if (event instanceof Overdraft e) {
+        } else if (event instanceof Overdrafted e) {
             this.overdraft = true;
-        } else if (event instanceof Balance e) {
+        } else if (event instanceof Balanced e) {
             this.overdraft = false;
         }
     }

@@ -11,5 +11,5 @@ import java.util.*;
  * @param initial  Initial deposit, constrained by Opening policy.
  * @param credit   Granted credit when open a new account.
  */
-public record Opened(UUID account, Opening initial, Granted credit, Customer customer) implements Event {
+public record Opened(UUID account, Opening initial, Granting credit, Customer customer) implements Event {
 }

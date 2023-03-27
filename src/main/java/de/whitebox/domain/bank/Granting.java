@@ -7,13 +7,13 @@ import de.whitebox.domain.shared.*;
  *
  * @param granted The amount credit as credit for a customer
  */
-public record Granted(double granted) implements ValueObject {
-    public Granted {
+public record Granting(double granted) implements ValueObject {
+    public Granting {
         if (granted < 0) throw new IllegalArgumentException("Credit credit should never be less then zero");
     }
 
-    public static Granted standardCreditLine() {
-        return new Granted(100.00);
+    public static Granting standardCreditLine() {
+        return new Granting(100.00);
     }
 
     public boolean notGrantedFor(double balance) {

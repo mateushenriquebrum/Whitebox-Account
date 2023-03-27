@@ -13,7 +13,7 @@ class SerializerTest {
     @Test
     void shouldUnmarshallAnEntity() {
         var initial = new Opening(300.00);
-        var line = new Granted(100.00);
+        var line = new Granting(100.00);
         var customer = new Customer("", "");
         var locked = randomUUID();
         var id = randomUUID();

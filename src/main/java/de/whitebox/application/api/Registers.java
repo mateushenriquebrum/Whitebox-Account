@@ -1,10 +1,10 @@
 package de.whitebox.application.api;
 
-import de.whitebox.application.api.Ledger.*;
+import de.whitebox.application.api.Query.*;
 
 import java.util.*;
 
-public interface Transactions {
+public interface Registers {
     void add(Transaction transaction);
     List<Transaction> of(UUID customer);
 }

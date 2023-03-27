@@ -1,13 +1,13 @@
 package de.whitebox.infrastructure.shared;
 
 import de.whitebox.application.api.*;
-import de.whitebox.application.api.Ledger.*;
+import de.whitebox.application.api.Query.*;
 import org.springframework.stereotype.*;
 
 import java.util.*;
 
 @Repository
-public class MemoryTransactions implements Transactions {
+public class MemoryRegisters implements Registers {
 
     private Map<UUID, List<Transaction>> data = new HashMap<>();
 
