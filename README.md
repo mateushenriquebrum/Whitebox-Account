@@ -29,7 +29,7 @@ They can be checked here using [OpenAPI](http://localhost:8080/swagger-ui/index.
 ## Running Application
 ```
 > sdk install java 19.0.2-zulu
-> git clone git@github.com:mateushenriquebrum/OnLineBank.git
+> git clone git@github.com:mateushenriquebrum/Whitebox-Account.git
 > gradle bootRun
 ```
 
