@@ -12,6 +12,13 @@ import java.util.*;
 
 import static org.springframework.http.ResponseEntity.*;
 
+/**
+ * The controller for even command an action like: debit, deposit, open, etc,
+ * or query accounts, account, etc.
+ * General rule:
+ * POST is always a command and will change the state;
+ * GET is always a query, no side effect MUST be guaranteed;
+ */
 @RestController()
 @RequestMapping("/account")
 

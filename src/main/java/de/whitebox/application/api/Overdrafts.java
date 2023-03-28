@@ -3,6 +3,9 @@ package de.whitebox.application.api;
 
 import java.util.*;
 
+/**
+ * Overdrafts repository
+ */
 public interface Overdrafts {
     Overdraft of(UUID customer);
 

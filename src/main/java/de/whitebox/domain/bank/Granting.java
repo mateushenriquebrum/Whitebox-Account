@@ -3,7 +3,7 @@ package de.whitebox.domain.bank;
 import de.whitebox.domain.shared.*;
 
 /**
- * A Value Object defining a simple credit credit schema
+ * A Value Object defining a simple credit line schema
  *
  * @param granted The amount credit as credit for a customer
  */

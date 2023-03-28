@@ -11,7 +11,8 @@ import static de.whitebox.domain.shared.Serializer.*;
 import static java.util.UUID.*;
 
 /**
- * Key Value Memory Database, it is for code assessment only
+ * Simplest memory implementation, in real application it would be a real database.
+ * PS: Documents or key values database fits better for this kind of data structure.
  */
 @Repository
 public class MemoryAccounts implements Accounts {

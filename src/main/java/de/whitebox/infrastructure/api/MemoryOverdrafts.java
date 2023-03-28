@@ -5,6 +5,10 @@ import org.springframework.stereotype.*;
 
 import java.util.*;
 
+/**
+ * Simplest memory implementation, in real application it would be a real database.
+ * PS: Documents or key values database fits better for this kind of data structure.
+ */
 @Repository
 public class MemoryOverdrafts implements Overdrafts {
 

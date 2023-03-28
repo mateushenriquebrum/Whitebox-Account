@@ -8,6 +8,7 @@ import static java.util.UUID.*;
 
 /**
  * A Value Object describing the customer, in a real application it should also be an entity
+ * and likely act together with other entities to guarantee consistence
  *
  * @param id      UUID for this customer
  * @param name    First name

@@ -8,9 +8,9 @@ import java.util.*;
 import static java.util.Objects.*;
 
 /**
- * Account: an entity that control user debit and credit,
+ * Account: an entity that control customer account's creation, debit and credit,
  * taking in account the credit line and deposit to properly
- * signalise overdraft and deny credit
+ * signalise overdraft and or deny debit
  */
 public class Account extends Entity {
     private double balance;

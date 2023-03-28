@@ -6,10 +6,11 @@ import de.whitebox.domain.shared.*;
 import java.util.*;
 
 /**
- * It is an application service represent all the know use case for Account entity
- * Also it is responsible to keep the consistence boundaries in transaction
- * means that accounts MUST fail if the entity lock version does not match with
- * the underline persistence mechanism and should be acting as an Aggregator when needed.
+ * It is an application service represent all known use case for Account entity
+ * Also it is responsible to keep the consistence boundaries in application and system,
+ * meaning that accounts MUST fail if the entity lock version does not match with
+ * the current version in the underline persistence mechanism,
+ * it should be acting as an Aggregator when needed.
  */
 public record Bank(Broker publisher, Accounts accounts) implements Aggregator {
     /**

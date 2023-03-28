@@ -4,6 +4,10 @@ import de.whitebox.application.api.Query.*;
 
 import java.util.*;
 
+
+/**
+ * Registers repository
+ */
 public interface Registers {
     void add(Transaction transaction);
 

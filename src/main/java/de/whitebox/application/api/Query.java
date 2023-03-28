@@ -7,6 +7,9 @@ import java.util.*;
 
 import static java.time.LocalDateTime.*;
 
+/**
+ * Service layer responsible to convert and store events to be used exclusively to API.
+ */
 @Service
 public class Query {
 
