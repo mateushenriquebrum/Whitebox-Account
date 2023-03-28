@@ -15,9 +15,9 @@ It is hard to test, failure prone and show loads of boilerplates, the only feasi
 It tends to change little once stable.
 
 ## Consistence Boundaries
-### Aggregators - Business Transaction
+### Aggregators (Business Transaction)
 Aggregators are some kind of business boundaries (business transactions), ensure that all entities are consistence flow the whole use case flow, a example of this idea is [Bank](https://github.com/mateushenriquebrum/OnLineBank/blob/main/src/main/java/de/whitebox/application/bank/Bank.java), as it validates, create, compose the whole structure in a consistent way, also all the entities should be over the discretion of shared data boundaries (system transactions).
-### Optimistic Lock - System Transactioin
+### Optimistic Lock (System Transaction)
 Most applications with low concurrency have a better result working with Optimistic Locks in such a way it diminishes or eliminates database retention, also it is so generic that it can be applied in any kind of shared data, e.g Memory, File, Database, etc.
 
 ## Event-Source
