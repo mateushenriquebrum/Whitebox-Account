@@ -24,4 +24,4 @@ Most applications with low concurrency have a better result working with Optimis
 By the contrary of many applications, it uses a behavioral persistence, it keeps tracking of all discret changes in a domain, serializes it and when needed recompose reducing to the latest state. The main advantage is that we understand the whole entity's life cycle, facilitating debugging, tracking logic flaws, improving observability and as a side effect it leverages domain events consecutively CQSR.
 
 ## API (Query)
-They can be checked here using (OpenAPI)[http://localhost:8080/swagger-ui/index.html].
+They can be checked here using [OpenAPI](http://localhost:8080/swagger-ui/index.html).
