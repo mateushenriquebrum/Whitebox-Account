@@ -1,6 +1,5 @@
 package de.whitebox.domain.bank;
 
-import de.whitebox.domain.bank.*;
 import de.whitebox.domain.bank.Account.*;
 import org.junit.jupiter.api.*;
 
@@ -13,38 +12,38 @@ class AccountTest {
     Granting credit = new Granting(200);
 
     @Test
-    void shouldAlwaysBeOpenedWithDeposit() {
+    void shouldAlwaysBeOpenedWithDeposit() throws RequiredDepositException {
         var good = new Opening(25.00);
         var bad = new Opening(24.99);
         assertDoesNotThrow(() -> Account.open(customer, good, credit));
-        assertThrows(IllegalArgumentException.class, () -> Account.open(customer, bad, credit));
+        assertThrows(RequiredDepositException.class, () -> Account.open(customer, bad, credit));
         var open = Account.open(customer, good, credit);
         assertTrue(open.changes().contains(new Opened(open.id(), good, credit, customer)));
     }
 
     @Test
-    void shouldCreditIncreaseBalance() {
+    void shouldCreditIncreaseBalance() throws RequiredDepositException {
         var account = create();
         account.credit(10.00);
         assertTrue(account.changes().contains(new Credited(account.id(), 10, 110)));
     }
 
     @Test
-    void shouldDebitDecreaseBalance() {
+    void shouldDebitDecreaseBalance() throws InsufficientDepositException, RequiredDepositException {
         var account = create();
         account.debit(10);
         assertTrue(account.changes().contains(new Debited(account.id(), 10, 90)));
     }
 
     @Test
-    void shouldDebitOverdraftAnAccount() {
+    void shouldDebitOverdraftAnAccount() throws InsufficientDepositException, RequiredDepositException {
         var account = create();
         account.debit(101);
         assertTrue(account.changes().contains(new Debited(account.id(), 101, -1)));
     }
 
     @Test
-    void shouldCreditReturnToNotOverdraftAnAccount() {
+    void shouldCreditReturnToNotOverdraftAnAccount() throws InsufficientDepositException, RequiredDepositException {
         var account = create();
         account.debit(101);
         account.credit(1);
@@ -52,27 +51,27 @@ class AccountTest {
     }
 
     @Test
-    void shouldNotAllowDebitIfCreditLineWasUsed() {
+    void shouldNotAllowDebitIfCreditLineWasUsed() throws RequiredDepositException {
         var account = create();
         assertThrows(InsufficientDepositException.class, () -> account.debit(301));
     }
 
     @Test
-    void shouldOverdraft() {
+    void shouldOverdraft() throws InsufficientDepositException, RequiredDepositException {
         var account = create();
         account.debit(101);
         assertTrue(account.changes().contains(new Overdrafted(account.id())));
     }
 
     @Test
-    void shouldRecoverBalance() {
+    void shouldRecoverBalance() throws InsufficientDepositException, RequiredDepositException {
         var account = create();
         account.debit(101);
         account.credit(1);
         assertTrue(account.changes().contains(new Balanced(account.id(), 0)));
     }
 
-    private Account create() {
+    private Account create() throws RequiredDepositException {
         return Account.open(customer, deposit, credit);
     }
 }

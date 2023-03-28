@@ -1,7 +1,7 @@
 package de.whitebox.infrastructure.api;
 
-import de.whitebox.application.api.*;
 import de.whitebox.application.api.Query.*;
+import de.whitebox.application.api.*;
 import org.springframework.stereotype.*;
 
 import java.util.*;
@@ -15,9 +15,9 @@ public class MemoryRegisters implements Registers {
     public void add(Transaction transaction) {
         data.putIfAbsent(transaction.account(), new ArrayList<>());
         data.computeIfPresent(transaction.account(), (i, d) -> {
-           var added = new ArrayList<>(d);
-           added.add(transaction);
-           return added;
+            var added = new ArrayList<>(d);
+            added.add(transaction);
+            return added;
         });
     }
 

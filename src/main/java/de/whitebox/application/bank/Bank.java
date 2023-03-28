@@ -16,7 +16,7 @@ public record Bank(Broker publisher, Accounts accounts) implements Aggregator {
      * It commands to open an account applying the default credit and validate every parameter
      * and failing if not possible
      */
-    public Account open(Customer customer, double initial) {
+    public Account open(Customer customer, double initial) throws Account.RequiredDepositException {
         var opened = Account.open(customer, new Opening(initial), Granting.standardCreditLine());
         commit(opened);
         return opened;
@@ -25,7 +25,7 @@ public record Bank(Broker publisher, Accounts accounts) implements Aggregator {
     /**
      * It commands to debit from an account applying all the checks and failing if not possible
      */
-    public void deposit(UUID id, double amount) {
+    public void deposit(UUID id, double amount) throws Account.InsufficientDepositException {
         var account = accounts.of(id);
         account.debit(amount);
         commit(account);

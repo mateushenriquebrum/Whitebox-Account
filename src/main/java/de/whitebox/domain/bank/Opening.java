@@ -7,8 +7,12 @@ import de.whitebox.domain.shared.*;
  *
  * @param deposit Initial deposit that cannot be less than 25.00u
  */
-public record Opening(double deposit) implements ValueObject {
+public record Opening(double deposit, double minimum) implements ValueObject {
+    public Opening(double deposit) {
+        this(deposit, 25);
+    }
+
     public boolean isMinimumRequired() {
-        return deposit >= 25.00;
+        return deposit >= minimum();
     }
 }

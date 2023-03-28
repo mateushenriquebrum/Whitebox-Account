@@ -18,7 +18,7 @@ public class Account extends Entity {
     private boolean overdraft;
     private Granting credit;
 
-    private Account(Customer customer, Opening deposit, Granting credit) {
+    private Account(Customer customer, Opening deposit, Granting credit) throws RequiredDepositException {
         requireNonNull(customer);
         requireNonNull(deposit);
         requireMinimumDeposit(deposit);
@@ -35,19 +35,19 @@ public class Account extends Entity {
         super(events, locked, id);
     }
 
-    public static Account open(Customer customer, Opening deposit, Granting line) {
+    public static Account open(Customer customer, Opening deposit, Granting line) throws RequiredDepositException {
         return new Account(customer, deposit, line);
     }
 
     public void credit(double amount) {
         var newBalance = this.balance + amount;
         apply(new Credited(this.id(), amount, newBalance));
-        if(newBalance >= 0 && overdraft) {
+        if (newBalance >= 0 && overdraft) {
             apply(new Balanced(this.id(), newBalance));
         }
     }
 
-    public void debit(double amount) {
+    public void debit(double amount) throws InsufficientDepositException {
         var newBalance = this.balance - amount;
         if (credit.notGrantedFor(newBalance)) {
             // There is a big change to release another event here
@@ -55,14 +55,14 @@ public class Account extends Entity {
             throw new InsufficientDepositException();
         }
         apply(new Debited(this.id(), amount, newBalance));
-        if(newBalance < 0 && !overdraft) {
+        if (newBalance < 0 && !overdraft) {
             apply(new Overdrafted(this.id()));
         }
     }
 
-    private static void requireMinimumDeposit(Opening amount) {
-        if (!amount.isMinimumRequired()) {
-            throw new IllegalArgumentException("Amount to open an account is not minimum required");
+    private static void requireMinimumDeposit(Opening deposit) throws RequiredDepositException {
+        if (!deposit.isMinimumRequired()) {
+            throw new RequiredDepositException(deposit.minimum());
         }
     }
 
@@ -106,5 +106,14 @@ public class Account extends Entity {
                 '}';
     }
 
-    public static class InsufficientDepositException extends RuntimeException {}
+    public static class InsufficientDepositException extends Exception {
+    }
+
+    public static class RequiredDepositException extends Exception {
+        private double minimum;
+
+        RequiredDepositException(double minimum) {
+            this.minimum = minimum;
+        }
+    }
 }

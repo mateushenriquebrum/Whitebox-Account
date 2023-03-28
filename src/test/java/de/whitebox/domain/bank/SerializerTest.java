@@ -1,17 +1,16 @@
 package de.whitebox.domain.bank;
 
-import de.whitebox.domain.bank.*;
 import org.junit.jupiter.api.*;
 
 import static de.whitebox.domain.bank.Account.*;
-import static de.whitebox.domain.shared.Serializer.serialize;
+import static de.whitebox.domain.shared.Serializer.*;
 import static java.util.List.*;
 import static java.util.UUID.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SerializerTest {
     @Test
-    void shouldUnmarshallAnEntity() {
+    void shouldUnmarshallAnEntity() throws RequiredDepositException {
         var initial = new Opening(300.00);
         var line = new Granting(100.00);
         var customer = new Customer("", "");

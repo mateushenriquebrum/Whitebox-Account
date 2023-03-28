@@ -1,7 +1,6 @@
 package de.whitebox.application.api;
 
 import de.whitebox.*;
-import org.hamcrest.*;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.autoconfigure.web.servlet.*;
@@ -9,11 +8,9 @@ import org.springframework.boot.test.context.*;
 import org.springframework.http.*;
 import org.springframework.test.web.servlet.*;
 
-import static org.hamcrest.Matchers.empty;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * The intention is to go throw the whole system end to end and verify if all the parts
@@ -43,12 +40,12 @@ class E2E {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(
                         """ 
-                        {
-                        "name" : "Mateus",
-                        "surname": "Brum",
-                        "deposit": 100
-                        }
-                        """);
+                                {
+                                "name" : "Mateus",
+                                "surname": "Brum",
+                                "deposit": 100
+                                }
+                                """);
 
         var response = server
                 .perform(request)
@@ -58,10 +55,11 @@ class E2E {
                 .getHeader("Location");
         id = response.split("/")[2];
     }
+
     private void debit(double amount) throws Exception {
         var request = post("/account/debit")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{ \"id\" : \""+id+"\", \"amount\": "+amount+"}");
+                .content("{ \"id\" : \"" + id + "\", \"amount\": " + amount + "}");
         server
                 .perform(request)
                 .andExpect(status().isOk())
@@ -73,7 +71,7 @@ class E2E {
     private void credit(double amount) throws Exception {
         var request = post("/account/credit")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{ \"id\" : \""+id+"\", \"amount\": "+amount+"}");
+                .content("{ \"id\" : \"" + id + "\", \"amount\": " + amount + "}");
         server
                 .perform(request)
                 .andExpect(status().isOk())

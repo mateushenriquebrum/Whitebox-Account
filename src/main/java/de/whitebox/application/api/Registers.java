@@ -6,5 +6,6 @@ import java.util.*;
 
 public interface Registers {
     void add(Transaction transaction);
+
     List<Transaction> of(UUID customer);
 }

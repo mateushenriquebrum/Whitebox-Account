@@ -1,4 +1,4 @@
-package de.whitebox.infrastructure.shared;
+package de.whitebox.infrastructure.api;
 
 import de.whitebox.application.api.*;
 import de.whitebox.application.api.Query.*;
@@ -10,7 +10,7 @@ import org.springframework.web.util.*;
 
 import java.util.*;
 
-import static org.springframework.http.ResponseEntity.created;
+import static org.springframework.http.ResponseEntity.*;
 
 @RestController()
 @RequestMapping("/account")
@@ -28,7 +28,7 @@ public class AccountController {
     }
 
     @PostMapping("/open")
-    public ResponseEntity<?> open(@RequestBody OpenRequest request) {
+    public ResponseEntity<?> open(@RequestBody OpenRequest request) throws Account.RequiredDepositException {
         var id = bank
                 .open(new Customer(request.name(), request.surname()), request.deposit())
                 .id();
@@ -40,13 +40,13 @@ public class AccountController {
     }
 
     @PostMapping("/debit")
-    public ResponseEntity<List<Transaction>> debit(@RequestBody DebitRequest request) {
+    public ResponseEntity<List<Transaction>> debit(@RequestBody DebitRequest request) throws Account.InsufficientDepositException {
         bank.deposit(request.id(), request.amount());
         return ResponseEntity.ok(query.of(request.id()));
     }
 
     @PostMapping("/credit")
-    public ResponseEntity<List<Transaction>>  credit(@RequestBody CreditRequest request) {
+    public ResponseEntity<List<Transaction>> credit(@RequestBody CreditRequest request) {
         bank.credit(request.id(), request.amount());
         return ResponseEntity.ok(query.of(request.id()));
     }
