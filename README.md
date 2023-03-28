@@ -2,7 +2,7 @@
 On-Line bank account using event-source, domain events and spring boot.
 
 ## Code Structure
-#### Domain
+### Domain
 Domains are objects that act as pure data structures and algorithms, they should represent the core ideas in a business like: Account, Customer, Debit, Credit, etc. 
 It is easy to test, compose and reason about, also it is the most likely piece of code to be changed when the business evolves.
 ### Application
@@ -25,3 +25,12 @@ By the contrary of many applications, it uses a behavioral persistence, it keeps
 
 ## API (Query)
 They can be checked here using [OpenAPI](http://localhost:8080/swagger-ui/index.html).
+
+## Running Application
+```
+> sdk install java 19.0.2-zulu
+> git clone git@github.com:mateushenriquebrum/OnLineBank.git
+> gradle bootRun
+```
+
+Now we can kick http://localhost:8080/swagger-ui/index.html
