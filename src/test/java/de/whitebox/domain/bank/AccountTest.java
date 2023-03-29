@@ -11,6 +11,8 @@ class AccountTest {
     Opening deposit = new Opening(100);
     Granting credit = new Granting(200);
 
+    Double INITIAL_DEPOSIT_PLUS_GRANTING = 300D;
+
     @Test
     void shouldAlwaysBeOpenedWithDeposit() throws RequiredDepositException {
         var good = new Opening(25.00);
@@ -69,6 +71,13 @@ class AccountTest {
         account.debit(101);
         account.credit(1);
         assertTrue(account.changes().contains(new Balanced(account.id(), 0)));
+    }
+
+    @Test
+    void shouldValidateDebit() throws InsufficientDepositException, RequiredDepositException {
+        var account = create();
+        assertTrue(account.isDebitAllowed(INITIAL_DEPOSIT_PLUS_GRANTING));
+        assertFalse(account.isDebitAllowed(INITIAL_DEPOSIT_PLUS_GRANTING + 1));
     }
 
     private Account create() throws RequiredDepositException {

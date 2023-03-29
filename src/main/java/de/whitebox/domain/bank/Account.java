@@ -49,7 +49,7 @@ public class Account extends Entity {
 
     public void debit(double amount) throws InsufficientDepositException {
         var newBalance = this.balance - amount;
-        if (credit.notGrantedFor(newBalance)) {
+        if (!credit.isGrantedFor(newBalance)) {
             // There is a big change to release another event here
             // Should a credit line listen for it in order to offer a better package for ths customer?
             throw new InsufficientDepositException();
@@ -58,6 +58,10 @@ public class Account extends Entity {
         if (newBalance < 0 && !overdraft) {
             apply(new Overdrafted(this.id()));
         }
+    }
+
+    public boolean isDebitAllowed(double amount) {
+        return credit.isGrantedFor(balance - amount);
     }
 
     private static void requireMinimumDeposit(Opening deposit) throws RequiredDepositException {

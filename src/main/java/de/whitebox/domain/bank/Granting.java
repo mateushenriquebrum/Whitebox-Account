@@ -16,7 +16,7 @@ public record Granting(double granted) implements ValueObject {
         return new Granting(100.00);
     }
 
-    public boolean notGrantedFor(double balance) {
-        return balance + granted < 0;
+    public boolean isGrantedFor(double balance) {
+        return balance + granted >= 0;
     }
 }
