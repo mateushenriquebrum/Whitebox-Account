@@ -74,10 +74,10 @@ class AccountTest {
     }
 
     @Test
-    void shouldValidateDebit() throws InsufficientDepositException, RequiredDepositException {
+    void shouldValidateDebit() throws RequiredDepositException {
         var account = create();
         assertTrue(account.isDebitAllowed(INITIAL_DEPOSIT_PLUS_GRANTING));
-        assertFalse(account.isDebitAllowed(INITIAL_DEPOSIT_PLUS_GRANTING + 1));
+        assertFalse(account.isDebitAllowed(INITIAL_DEPOSIT_PLUS_GRANTING + 0.01));
     }
 
     private Account create() throws RequiredDepositException {
