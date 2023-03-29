@@ -3,6 +3,7 @@ package de.whitebox.infrastructure.api;
 import de.whitebox.application.api.*;
 import de.whitebox.application.api.Query.*;
 import de.whitebox.application.bank.*;
+import de.whitebox.application.bank.Bank.*;
 import de.whitebox.domain.bank.*;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -49,13 +50,18 @@ public class AccountController {
     @PostMapping("/debit")
     public ResponseEntity<List<Transaction>> debit(@RequestBody DebitRequest request) throws Account.InsufficientDepositException {
         bank.deposit(request.id(), request.amount());
-        return ResponseEntity.ok(query.of(request.id()));
+        return ok(query.of(request.id()));
+    }
+
+    @GetMapping("/{id}/debit/{amount}/allowance")
+    public ResponseEntity<Allowance> allowance(@PathVariable("id") UUID id, @PathVariable("amount") Double amount) {
+        return ok(bank.allowance(id, amount));
     }
 
     @PostMapping("/credit")
     public ResponseEntity<List<Transaction>> credit(@RequestBody CreditRequest request) {
         bank.credit(request.id(), request.amount());
-        return ResponseEntity.ok(query.of(request.id()));
+        return ok(query.of(request.id()));
     }
 
     @GetMapping("/{id}")

@@ -66,8 +66,16 @@ public class Account extends Entity {
 
     private static void requireMinimumDeposit(Opening deposit) throws RequiredDepositException {
         if (!deposit.isMinimumRequired()) {
-            throw new RequiredDepositException(deposit.minimum());
+            throw new RequiredDepositException();
         }
+    }
+
+    public double balance() {
+        return this.balance;
+    }
+
+    public double granted() {
+        return this.credit.granted();
     }
 
     @Override
@@ -81,9 +89,9 @@ public class Account extends Entity {
             this.balance = e.initial().deposit();
             this.credit = e.credit();
             this.customer = e.customer();
-        } else if (event instanceof Overdrafted e) {
+        } else if (event instanceof Overdrafted) {
             this.overdraft = true;
-        } else if (event instanceof Balanced e) {
+        } else if (event instanceof Balanced) {
             this.overdraft = false;
         }
     }
@@ -114,10 +122,5 @@ public class Account extends Entity {
     }
 
     public static class RequiredDepositException extends Exception {
-        private double minimum;
-
-        RequiredDepositException(double minimum) {
-            this.minimum = minimum;
-        }
     }
 }

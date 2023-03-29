@@ -42,6 +42,21 @@ public record Bank(Broker publisher, Accounts accounts) implements Aggregator {
     }
 
     /**
+     * Return the maximum debit allowed for this account
+     */
+    public Allowance allowance(UUID id, Double requested) {
+        var account = accounts.of(id);
+        return new Allowance(
+                requested,
+                account.balance(),
+                account.granted(),
+                account.balance() + account.granted()
+                , account.isDebitAllowed(requested));
+    }
+
+    public record Allowance(double requested, double balance, double granted, double limit, boolean allowed) { }
+
+    /**
      * This is pretty much a boilerplate that will happen with every command and
      * can mostly be addressed with some sort of annotation and reflection.
      * However, it is important highlight that the order here matters, if the
