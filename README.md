@@ -1,6 +1,9 @@
 # Whitebox Accounts
 On-Line bank account using event-source, domain events and spring boot.
 
+## Considerations
+As it is a production-like application but not one, all the data are stored in memory and as such it is ephemeral, nevertheless the same data structure can be applied for a document database like mongo smoothly.
+
 ## Code Structure
 ### Domain
 Domains are objects that act as pure data structures and algorithms, they should represent the core ideas in a business like: Account, Customer, Debit, Credit, etc. 
@@ -34,3 +37,4 @@ They can be checked here using [OpenAPI](http://localhost:8080/swagger-ui/index.
 ```
 
 Now we can kick http://localhost:8080/swagger-ui/index.html
+
